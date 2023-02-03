@@ -94,19 +94,17 @@ func main() {
 	if len(os.Args) < 2 {
 		log.Fatal("ファイル名を指定してくだい")
 	}
-	filename := os.Args[1]
-	b, err := os.ReadFile(filename)
+	src, err := os.ReadFile(os.Args[1])
 	if err != nil {
 		log.Fatal(err)
 	}
 	var taskDefinitionJson TaskDefinitionJson
 	var taskDefinition TaskDefinition
-	if err := json.Unmarshal(b, &taskDefinitionJson); err != nil {
+	if err := json.Unmarshal(src, &taskDefinitionJson); err != nil {
 		log.Fatal(err)
 	}
-	// top
 	if taskDefinitionJson.TaskDefinition.ContainerDefinitions == nil {
-		if err = json.Unmarshal(b, &taskDefinition); err != nil {
+		if err = json.Unmarshal(src, &taskDefinition); err != nil {
 			log.Fatal(err)
 		}
 	} else {
