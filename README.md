@@ -25,3 +25,9 @@ $ ecsource filename
 ```bash
 go install github.com/tatsuo48/ecsource
 ```
+
+or
+
+```bash
+brew install tatsuo48/tap/ecsource
+```
