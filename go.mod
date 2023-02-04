@@ -1,4 +1,4 @@
-module ecsresource
+module github.com/tatsuo48/ecsource
 
 go 1.19
 
