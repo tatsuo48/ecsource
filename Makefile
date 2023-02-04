@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: build install clean
 
 build:
 	@echo "Building..."
