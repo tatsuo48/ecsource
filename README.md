@@ -23,5 +23,5 @@ $ ecsource filename
 ## how to install
 
 ```bash
-make install
+go install github.com/tatsuo48/ecsource
 ```
