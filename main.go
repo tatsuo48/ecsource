@@ -140,6 +140,40 @@ func main() {
 	table.Append([]string{"sum of all container", fmt.Sprintf("%d", allCPU), fmt.Sprintf("%d", allMemory), fmt.Sprintf("%d", allMemoryReservation)})
 	taskCPU, _ := strconv.ParseInt(taskDefinition.CPU, 10, 64)
 	taskMemory, _ := strconv.ParseInt(taskDefinition.Memory, 10, 64)
-	table.SetFooter([]string{"leftover", fmt.Sprintf("%d", taskCPU-allCPU), fmt.Sprintf("%d", taskMemory-allMemory), fmt.Sprintf("%d", taskMemory-allMemoryReservation)})
+
+	leftoverCPU := taskCPU - allCPU
+	leftoverMemory := taskMemory - allMemory
+	leftoverMemoryReservation := taskMemory - allMemoryReservation
+
+	footerStrings := []string{
+		"leftover",
+		fmt.Sprintf("%d", leftoverCPU),
+		fmt.Sprintf("%d", leftoverMemory),
+		fmt.Sprintf("%d", leftoverMemoryReservation),
+	}
+	table.SetFooter(footerStrings)
+
+	footerColors := make([]tablewriter.Colors, 4)
+	footerColors[0] = tablewriter.Colors{} // For "leftover" label
+
+	if leftoverCPU < 0 {
+		footerColors[1] = tablewriter.Colors{tablewriter.FgRedColor}
+	} else {
+		footerColors[1] = tablewriter.Colors{}
+	}
+
+	if leftoverMemory < 0 {
+		footerColors[2] = tablewriter.Colors{tablewriter.FgRedColor}
+	} else {
+		footerColors[2] = tablewriter.Colors{}
+	}
+
+	if leftoverMemoryReservation < 0 {
+		footerColors[3] = tablewriter.Colors{tablewriter.FgRedColor}
+	} else {
+		footerColors[3] = tablewriter.Colors{}
+	}
+	table.SetFooterColor(footerColors...)
+
 	table.Render()
 }
