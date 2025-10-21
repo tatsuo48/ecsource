@@ -11,14 +11,14 @@ func TestRunWithValidFile(t *testing.T) {
 		t.Skip("test_task.json not found, skipping test")
 	}
 
-	err := run("test_task.json")
+	err := run("test_task.json", "table", false)
 	if err != nil {
 		t.Fatalf("Expected run() to succeed with test_task.json, got error: %v", err)
 	}
 }
 
 func TestRunWithNonexistentFile(t *testing.T) {
-	err := run("nonexistent_file.json")
+	err := run("nonexistent_file.json", "table", false)
 	if err == nil {
 		t.Error("Expected error for nonexistent file, got nil")
 	}
@@ -37,7 +37,7 @@ func TestRunWithInvalidJSON(t *testing.T) {
 	}
 	tmpFile.Close()
 
-	err = run(tmpFile.Name())
+	err = run(tmpFile.Name(), "table", false)
 	if err == nil {
 		t.Error("Expected error for invalid JSON, got nil")
 	}
@@ -79,8 +79,41 @@ func TestRunWithInvalidCPU(t *testing.T) {
 	}
 	tmpFile.Close()
 
-	err = run(tmpFile.Name())
+	err = run(tmpFile.Name(), "table", false)
 	if err == nil {
 		t.Error("Expected error for invalid CPU value, got nil")
+	}
+}
+
+func TestRunWithJSONOutput(t *testing.T) {
+	if _, err := os.Stat("test_task.json"); os.IsNotExist(err) {
+		t.Skip("test_task.json not found, skipping test")
+	}
+
+	err := run("test_task.json", "json", false)
+	if err != nil {
+		t.Fatalf("Expected run() to succeed with JSON output, got error: %v", err)
+	}
+}
+
+func TestRunWithCSVOutput(t *testing.T) {
+	if _, err := os.Stat("test_task.json"); os.IsNotExist(err) {
+		t.Skip("test_task.json not found, skipping test")
+	}
+
+	err := run("test_task.json", "csv", false)
+	if err != nil {
+		t.Fatalf("Expected run() to succeed with CSV output, got error: %v", err)
+	}
+}
+
+func TestRunWithInvalidFormat(t *testing.T) {
+	if _, err := os.Stat("test_task.json"); os.IsNotExist(err) {
+		t.Skip("test_task.json not found, skipping test")
+	}
+
+	err := run("test_task.json", "invalid", false)
+	if err == nil {
+		t.Error("Expected error for invalid output format, got nil")
 	}
 }
