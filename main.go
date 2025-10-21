@@ -138,8 +138,14 @@ func main() {
 		allMemoryReservation += containerDefinition.MemoryReservation
 	}
 	table.Append([]string{"sum of all container", fmt.Sprintf("%d", allCPU), fmt.Sprintf("%d", allMemory), fmt.Sprintf("%d", allMemoryReservation)})
-	taskCPU, _ := strconv.ParseInt(taskDefinition.CPU, 10, 64)
-	taskMemory, _ := strconv.ParseInt(taskDefinition.Memory, 10, 64)
+	taskCPU, err := strconv.ParseInt(taskDefinition.CPU, 10, 64)
+	if err != nil {
+		log.Fatalf("failed to parse task CPU '%s': %v", taskDefinition.CPU, err)
+	}
+	taskMemory, err := strconv.ParseInt(taskDefinition.Memory, 10, 64)
+	if err != nil {
+		log.Fatalf("failed to parse task Memory '%s': %v", taskDefinition.Memory, err)
+	}
 
 	leftoverCPU := taskCPU - allCPU
 	leftoverMemory := taskMemory - allMemory
